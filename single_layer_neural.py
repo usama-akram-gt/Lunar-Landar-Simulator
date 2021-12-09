@@ -149,7 +149,7 @@ if __name__ == "__main__":
         with open('training_file.csv', 'r') as training:
             training_csv = reader(training)
             for row in training_csv:
-                feed_forward_process([row[0], row[1], 1]) #Here row 
+                feed_forward_process([row[0], row[1], 1])
                 back_propogation_process([row[2], row[3]])
 
 
@@ -161,7 +161,7 @@ if __name__ == "__main__":
             for row in training_csv:
                 feed_forward_process([row[0], row[1], 1]) #Here row
                 # first we will kept calculating error for each row and then keep appending it and then 
-                total_error.append(((float(row[2]) - float(output_layer[0].AV)) + (float(row[3]) - float(output_layer[1].AV))) / 2)               
+                total_error.append( ( (float(row[2]) - float(output_layer[0].AV))**2 + (float(row[3]) - float(output_layer[1].AV))**2 ) / 2)               
             
             # calculating our error here in training error and checking it if the error 
             # become stable then we stop but I need to ask teacher how we check actually 
@@ -177,7 +177,7 @@ if __name__ == "__main__":
             for row in training_csv:
                 feed_forward_process([row[0], row[1], 1]) #Here row
                 # first we will kept calculating error for each row and then keep appending it and then
-                total_error.append(((float(row[2]) - float(output_layer[0].AV)) + (float(row[3]) - float(output_layer[1].AV))) / 2)                
+                total_error.append( ( (float(row[2]) - float(output_layer[0].AV))**2 + (float(row[3]) - float(output_layer[1].AV))**2 ) / 2)                
                                 
             # calculating our error here in training error and checking it if the error 
             # become stable then we stop but I need to ask teacher how we check actually 
@@ -198,8 +198,8 @@ if __name__ == "__main__":
         # We will be kept appending all our errors which we will be calculating
         # and then we will devide it by the total number or error lines which have got
         # calculated and then taking squere of it and that will be our error.   
-        print(sum(total_error) / len(total_error))
-        return sum(total_error) / len(total_error)
+        print(math.sqrt(sum(total_error) / len(total_error)))
+        return math.sqrt(sum(total_error) / len(total_error))
 
     def saving_weights():
         weights_file = open("weights.txt", "a")
@@ -214,11 +214,15 @@ if __name__ == "__main__":
     def load_weights():
         return
     
+    def normalize(value):
+        
+        return
+
     def de_normalizing():
         # As we have normalized now need to convert it back to de_normalize 
         return
 
-    for i in range(100):
+    for i in range(150):
         print('Epoch no. ', i + 1)
         # We call this function to train our model using the game dataset
         training()  
