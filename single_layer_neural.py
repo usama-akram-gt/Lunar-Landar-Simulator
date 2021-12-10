@@ -158,7 +158,7 @@ if __name__ == "__main__":
     def training():
         # start reading here and keep passing that to our feed_forward_process and 
         # that will end as file stops reading from the data
-        with open('game_training_file.csv', 'r') as training:
+        with open('game_final_accurate.csv', 'r') as training:
             training_csv = reader(training)
             for row in training_csv:
                 feed_forward_process([row[0], row[1], 1])
@@ -168,7 +168,7 @@ if __name__ == "__main__":
     # Feedforward + error calculation // but on the training file
     def training_error(): # We will be calculating this error on our training data after we are done with the training
         total_error = []
-        with open('game_training_file.csv', 'r') as training:
+        with open('game_final_accurate.csv', 'r') as training:
             training_csv = reader(training)
             for row in training_csv:
                 feed_forward_process([row[0], row[1], 1]) #Here row
@@ -209,7 +209,7 @@ if __name__ == "__main__":
         return math.sqrt(sum(total_error) / len(total_error))
 
     def saving_weights():
-        weights_file = open("new_game_data_weights.txt", "a")
+        weights_file = open("new_game_data_weights_accurate.txt", "a")
         weights_file.write("\n")
         weights_file.write(str(input_layer[0].weights_list[0]) + "," + str(input_layer[1].weights_list[0]) + "," + str(input_layer[1].weights_list[1]) + "," +
                 str(input_layer[2].weights_list[0]) + "," + str(input_layer[2].weights_list[1]) + "," + str(hidden_layer[0].weights_list[0]) + "," +
@@ -240,17 +240,17 @@ if __name__ == "__main__":
         return
 
     def normalization(outputs):
-        output1 = (outputs[0] - (-596.451962)) / ((677.446350) - (-596.451962))
-        output2 = (outputs[1] - (65.068284)) / ((986.971116) - (65.068284))
+        output1 = (outputs[0] - (-599.480)) / ((750.731) - (-599.480))
+        output2 = (outputs[1] - (65.754)) / ((719.332) - (65.754))
         return [output1, output2]
-
+ 
     def de_normalization(outputs):
         # As we have normalized now need to convert it back to de_normalize 
-        return [(outputs[0] * ((8.000000) - (-6.722231)) + (-6.722231)),(outputs[1] * ((7.200995) - (-4.905407)) + (-4.905407))]
+        return [(outputs[0] * ((7.999) - (-4.408)) + (-4.408)),(outputs[1] * ((6.193) - (-7.876)) + (-7.876))]
 
     def prediction():
         # we predict in this function that what would be the result against one game input
-        normalized_result = normalization([-370.56718430963474,420.6159579864361])
+        normalized_result = normalization([273.710,353.600])
         normalized_result.append(1)
         print(normalized_result)
         load_weights()
@@ -258,7 +258,7 @@ if __name__ == "__main__":
         return de_normalization([output_layer[0].AV,output_layer[1].AV])
 
     #load_weights()
-    for i in range(2000):
+    for i in range(1):
         #print(prediction())
         print('Epoch no. ', i + 1)
         # We call this function to train our model using the game dataset
