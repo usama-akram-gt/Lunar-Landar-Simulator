@@ -25,7 +25,7 @@ class Neuron:
 
     def sigmoid(self, x):
         #applying the sigmoid function
-        self.AV = 1 / (1 + math.exp(-x))
+        self.AV = 1 / (1 + math.exp(-(0.1)*(x)))
         #print(self.AV)  
 
     def mult_weights(self, prevLayer):
@@ -110,8 +110,8 @@ if __name__ == "__main__":
     # we sent our actual outputs that we expect our feed forward network to predict
     def back_propogation_process(outputs):
         error = []
-        our_lambda = 0.3 # here out 0.8 is lambda
-        momentum_mt = 0.2 # our momentum same as like lambda kind of
+        our_lambda = 0.1 # here out 0.1 is lambda
+        momentum_mt = 0.1 # our momentum same as like lambda kind of
 
         # first calculating errors where we subtract the expected output which we pass as parameter to the 
         # back propogation and then subtract it with the actual result we get for our output which is stored in Activation value of our layer
@@ -243,23 +243,23 @@ if __name__ == "__main__":
         output1 = (outputs[0] - (-599.480)) / ((750.731) - (-599.480))
         output2 = (outputs[1] - (65.754)) / ((719.332) - (65.754))
         return [output1, output2]
- 
+
     def de_normalization(outputs):
         # As we have normalized now need to convert it back to de_normalize 
         return [(outputs[0] * ((7.999) - (-4.408)) + (-4.408)),(outputs[1] * ((6.193) - (-7.876)) + (-7.876))]
 
     def prediction():
         # we predict in this function that what would be the result against one game input
-        normalized_result = normalization([273.710,353.600])
+        normalized_result = normalization([273.670,354.100])
         normalized_result.append(1)
         print(normalized_result)
         load_weights()
         feed_forward_process(normalized_result) #Here row
         return de_normalization([output_layer[0].AV,output_layer[1].AV])
 
-    #load_weights()
     for i in range(1):
-        #print(prediction())
+        print(prediction())
+        '''
         print('Epoch no. ', i + 1)
         # We call this function to train our model using the game dataset
         training()  
@@ -267,8 +267,9 @@ if __name__ == "__main__":
         # Checking training error after we are done training our model
         training_error() 
         # Checking validation error on our validation data after training
-        validation_error() 
+        #validation_error() 
         print('\n')
 
         # Weights are saved after every epoch
         saving_weights()
+        '''
