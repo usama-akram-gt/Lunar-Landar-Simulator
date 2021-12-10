@@ -74,6 +74,12 @@ if __name__ == "__main__":
         input_layer[1].weights_list[1] = 4.0
         input_layer[2].weights_list[0] = 2.7
         input_layer[2].weights_list[1] = -2.2
+        input_layer[0].weights_list[0] = 36.1536705576
+        input_layer[0].weights_list[1] = 0.584834730258
+        input_layer[1].weights_list[0] = 1.17265681602
+        input_layer[1].weights_list[1] = -18.3618481024
+        input_layer[2].weights_list[0] = -23.0049550389
+        input_layer[2].weights_list[1] = 15.8550490139
         '''
 
         hidden_layer[0].mult_weights(input_layer)
@@ -84,6 +90,12 @@ if __name__ == "__main__":
         hidden_layer[0].weights_list[0] = -6.0
         hidden_layer[1].weights_list[0] = 6.5
         hidden_layer[2].weights_list[0] = 2.7
+        hidden_layer[0].weights_list[0] = 1.44136083822
+        hidden_layer[0].weights_list[1] = -15.3524786656
+        hidden_layer[1].weights_list[0] = 1.02460673772
+        hidden_layer[1].weights_list[1] = 41.8405191093
+        hidden_layer[2].weights_list[0] = -0.989759205097
+        hidden_layer[2].weights_list[1] = -1.54938717042
         '''
 
         '''
@@ -184,11 +196,6 @@ if __name__ == "__main__":
             # check that now we are not getting any significant change in our model
             print('Validation Error: ')
             root_mean_squere(total_error) 
-
-    def prediction():
-        # we predict in this function that what would be the result against one game input
-        feed_forward_process([0, 0, 1]) #Here row 
-        pass 
         
     '''
     RMSE of test > RMSE of train => OVER FITTING of the data
@@ -212,17 +219,39 @@ if __name__ == "__main__":
         return
 
     def load_weights():
+        input_layer[0].weights_list[0] = 36.1536705576
+        input_layer[0].weights_list[1] = 0.584834730258
+        input_layer[1].weights_list[0] = 1.17265681602
+        input_layer[1].weights_list[1] = -18.3618481024
+        input_layer[2].weights_list[0] = -23.0049550389
+        input_layer[2].weights_list[1] = 15.8550490139
+        hidden_layer[0].weights_list[0] = 1.44136083822
+        hidden_layer[0].weights_list[1] = -15.3524786656
+        hidden_layer[1].weights_list[0] = 1.02460673772
+        hidden_layer[1].weights_list[1] = 41.8405191093
+        hidden_layer[2].weights_list[0] = -0.989759205097
+        hidden_layer[2].weights_list[1] = -1.54938717042
         return
     
-    def normalize(value):
-        
-        return
+    def normalization(outputs):
+        output1 = (outputs[0] - (-800.389713)) / ((766.799120) - (-800.389713))
+        output2 = (outputs[1] - (65.113279)) / ((1006.451787) - (65.113279))
+        return [output1, output2]
 
-    def de_normalizing():
+    def de_normalization(outputs):
         # As we have normalized now need to convert it back to de_normalize 
-        return
+        return [(outputs[0] * ((8.000000) - (-5.920036)) + (-5.920036)),(outputs[1] * ((7.765852) - (-7.509682)) + (-7.509682))]
 
-    for i in range(150):
+    def prediction():
+        # we predict in this function that what would be the result against one game input
+        normalized_result = normalization([-451.9277289, 431.9])
+        normalized_result.append(1)
+        load_weights()
+        feed_forward_process(normalized_result) #Here row
+        return de_normalization([output_layer[0].AV,output_layer[1].AV])
+
+    for i in range(5):
+        #print(prediction())
         print('Epoch no. ', i + 1)
         # We call this function to train our model using the game dataset
         training()  
@@ -232,7 +261,6 @@ if __name__ == "__main__":
         # Checking validation error on our validation data after training
         validation_error() 
         print('\n')
-
 
         # Weights are saved after every epoch
         saving_weights() 
