@@ -110,7 +110,7 @@ if __name__ == "__main__":
     # we sent our actual outputs that we expect our feed forward network to predict
     def back_propogation_process(outputs):
         error = []
-        our_lambda = 0.9 # here out 0.8 is lambda
+        our_lambda = 0.1 # here out 0.8 is lambda
         momentum_mt = 0.1 # our momentum same as like lambda kind of
 
         # first calculating errors where we subtract the expected output which we pass as parameter to the 
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     def training():
         # start reading here and keep passing that to our feed_forward_process and 
         # that will end as file stops reading from the data
-        with open('training_file.csv', 'r') as training:
+        with open('game_training_file.csv', 'r') as training:
             training_csv = reader(training)
             for row in training_csv:
                 feed_forward_process([row[0], row[1], 1])
@@ -168,7 +168,7 @@ if __name__ == "__main__":
     # Feedforward + error calculation // but on the training file
     def training_error(): # We will be calculating this error on our training data after we are done with the training
         total_error = []
-        with open('training_file.csv', 'r') as training:
+        with open('game_training_file.csv', 'r') as training:
             training_csv = reader(training)
             for row in training_csv:
                 feed_forward_process([row[0], row[1], 1]) #Here row
@@ -184,7 +184,7 @@ if __name__ == "__main__":
     # Feedforward + error calculation // but on the validation/test file
     def validation_error(): # We will be doing it on our testing data or we can call it validation data
         total_error = []
-        with open('validation_file.csv', 'r') as training:
+        with open('game_validation_file.csv', 'r') as training:
             training_csv = reader(training)
             for row in training_csv:
                 feed_forward_process([row[0], row[1], 1]) #Here row
@@ -209,7 +209,7 @@ if __name__ == "__main__":
         return math.sqrt(sum(total_error) / len(total_error))
 
     def saving_weights():
-        weights_file = open("weights.txt", "a")
+        weights_file = open("new_game_data_weights.txt", "a")
         weights_file.write("\n")
         weights_file.write(str(input_layer[0].weights_list[0]) + "," + str(input_layer[1].weights_list[0]) + "," + str(input_layer[1].weights_list[1]) + "," +
                 str(input_layer[2].weights_list[0]) + "," + str(input_layer[2].weights_list[1]) + "," + str(hidden_layer[0].weights_list[0]) + "," +
@@ -219,38 +219,39 @@ if __name__ == "__main__":
         return
 
     def load_weights():
-        input_layer[0].weights_list[0] = 36.1536705576
-        input_layer[0].weights_list[1] = 0.584834730258
-        input_layer[1].weights_list[0] = 1.17265681602
-        input_layer[1].weights_list[1] = -18.3618481024
-        input_layer[2].weights_list[0] = -23.0049550389
-        input_layer[2].weights_list[1] = 15.8550490139
-        hidden_layer[0].weights_list[0] = 1.44136083822
-        hidden_layer[0].weights_list[1] = -15.3524786656
-        hidden_layer[1].weights_list[0] = 1.02460673772
-        hidden_layer[1].weights_list[1] = 41.8405191093
-        hidden_layer[2].weights_list[0] = -0.989759205097
-        hidden_layer[2].weights_list[1] = -1.54938717042
+        input_layer[0].weights_list[0] = 0.37572296913106434
+        input_layer[0].weights_list[1] = 0.7187412395366811
+        input_layer[1].weights_list[0] = 0.3363959776023122
+        input_layer[1].weights_list[1] = 0.7082727994723959
+        input_layer[2].weights_list[0] = 0.5456427348147682
+        input_layer[2].weights_list[1] = -0.37774808043643654
+        hidden_layer[0].weights_list[0] = -0.44522820331034724
+        hidden_layer[0].weights_list[1] = 0.2185561246050553
+        hidden_layer[1].weights_list[0] = 0.19588306574167805
+        hidden_layer[1].weights_list[1] = 0.14128730041682125
+        hidden_layer[2].weights_list[0] = 0.27803559044455317
+        hidden_layer[2].weights_list[1] = -0.09388868367449614
         return
-    
+
     def normalization(outputs):
-        output1 = (outputs[0] - (-800.389713)) / ((766.799120) - (-800.389713))
-        output2 = (outputs[1] - (65.113279)) / ((1006.451787) - (65.113279))
+        output1 = (outputs[0] - (-596.451962)) / ((677.446350) - (-596.451962))
+        output2 = (outputs[1] - (65.068284)) / ((986.971116) - (65.068284))
         return [output1, output2]
 
     def de_normalization(outputs):
         # As we have normalized now need to convert it back to de_normalize 
-        return [(outputs[0] * ((8.000000) - (-5.920036)) + (-5.920036)),(outputs[1] * ((7.765852) - (-7.509682)) + (-7.509682))]
+        return [(outputs[0] * ((8.000000) - (-6.722231)) + (-6.722231)),(outputs[1] * ((7.200995) - (-4.905407)) + (-4.905407))]
 
     def prediction():
         # we predict in this function that what would be the result against one game input
-        normalized_result = normalization([-451.9277289, 431.9])
+        normalized_result = normalization([-370.56718430963474,420.6159579864361])
         normalized_result.append(1)
+        print(normalized_result)
         load_weights()
         feed_forward_process(normalized_result) #Here row
         return de_normalization([output_layer[0].AV,output_layer[1].AV])
 
-    for i in range(5):
+    for i in range(2000):
         #print(prediction())
         print('Epoch no. ', i + 1)
         # We call this function to train our model using the game dataset
