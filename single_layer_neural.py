@@ -110,8 +110,8 @@ if __name__ == "__main__":
     # we sent our actual outputs that we expect our feed forward network to predict
     def back_propogation_process(outputs):
         error = []
-        our_lambda = 0.1 # here out 0.8 is lambda
-        momentum_mt = 0.1 # our momentum same as like lambda kind of
+        our_lambda = 0.3 # here out 0.8 is lambda
+        momentum_mt = 0.2 # our momentum same as like lambda kind of
 
         # first calculating errors where we subtract the expected output which we pass as parameter to the 
         # back propogation and then subtract it with the actual result we get for our output which is stored in Activation value of our layer
@@ -127,7 +127,7 @@ if __name__ == "__main__":
             # now in this loop we first multiply the calculated gradiant decent with the weights of the hidden layer first for which we needed the addition result which we add
             result = 0
             for j in range(0, len(output_layer)):
-                result = result + ( output_layer[j].grad_val * hidden_layer[i].weights_list[j] ) 
+                result = result + ( float(output_layer[j].grad_val) * float(hidden_layer[i].weights_list[j]) ) 
                 hidden_layer[i].grad_val = our_lambda * hidden_layer[i].AV * (1 - hidden_layer[i].AV) * result
 
         
@@ -144,11 +144,11 @@ if __name__ == "__main__":
         # now finally updating weights after calculating new delta weights on the basis of gradiant
         for i in range(0, len(hidden_layer)):
             for j in range(0, len(hidden_layer[i].weights_list)): # We have momentum same as like lambda where we tell it how fast it should move?
-                hidden_layer[i].weights_list[j] = hidden_layer[i].weights_list[j] + hidden_layer[i].delta_weights[j]
+                hidden_layer[i].weights_list[j] = float(hidden_layer[i].weights_list[j]) + float(hidden_layer[i].delta_weights[j])
 
         for i in range(0, len(input_layer)):
             for j in range(0, len(input_layer[i].weights_list)): # We have momentum same as like lambda where we tell it how fast it should move?
-                input_layer[i].weights_list[j] = input_layer[i].weights_list[j] + input_layer[i].delta_weights[j]
+                input_layer[i].weights_list[j] = float(input_layer[i].weights_list[j]) + float(input_layer[i].delta_weights[j])
 
         # Note: we don't calculate any gradiant decent for our input layer
 
@@ -219,18 +219,24 @@ if __name__ == "__main__":
         return
 
     def load_weights():
-        input_layer[0].weights_list[0] = 0.37572296913106434
-        input_layer[0].weights_list[1] = 0.7187412395366811
-        input_layer[1].weights_list[0] = 0.3363959776023122
-        input_layer[1].weights_list[1] = 0.7082727994723959
-        input_layer[2].weights_list[0] = 0.5456427348147682
-        input_layer[2].weights_list[1] = -0.37774808043643654
-        hidden_layer[0].weights_list[0] = -0.44522820331034724
-        hidden_layer[0].weights_list[1] = 0.2185561246050553
-        hidden_layer[1].weights_list[0] = 0.19588306574167805
-        hidden_layer[1].weights_list[1] = 0.14128730041682125
-        hidden_layer[2].weights_list[0] = 0.27803559044455317
-        hidden_layer[2].weights_list[1] = -0.09388868367449614
+        # Picking them from the file
+        weights = []
+        with open('single_line_weight.txt') as f:
+            line = f.read()
+            weights = line.split(",")        
+
+        input_layer[0].weights_list[0] = weights[0]
+        input_layer[0].weights_list[1] = weights[1]
+        input_layer[1].weights_list[0] = weights[2]
+        input_layer[1].weights_list[1] = weights[3]
+        input_layer[2].weights_list[0] = weights[4]
+        input_layer[2].weights_list[1] = weights[5]
+        hidden_layer[0].weights_list[0] = weights[6]
+        hidden_layer[0].weights_list[1] = weights[7]
+        hidden_layer[1].weights_list[0] = weights[8]
+        hidden_layer[1].weights_list[1] = weights[9]
+        hidden_layer[2].weights_list[0] = weights[10]
+        hidden_layer[2].weights_list[1] = weights[11]
         return
 
     def normalization(outputs):
@@ -251,6 +257,7 @@ if __name__ == "__main__":
         feed_forward_process(normalized_result) #Here row
         return de_normalization([output_layer[0].AV,output_layer[1].AV])
 
+    #load_weights()
     for i in range(2000):
         #print(prediction())
         print('Epoch no. ', i + 1)
@@ -264,4 +271,4 @@ if __name__ == "__main__":
         print('\n')
 
         # Weights are saved after every epoch
-        saving_weights() 
+        saving_weights()
