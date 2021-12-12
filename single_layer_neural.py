@@ -25,7 +25,7 @@ class Neuron:
 
     def sigmoid(self, x):
         #applying the sigmoid function
-        self.AV = 1 / (1 + math.exp(-(0.3 * x)))
+        self.AV = 1 / (1 + math.exp(-(0.1 * x)))
         #print(self.AV)  
 
     def mult_weights(self, prevLayer):
@@ -108,8 +108,8 @@ if __name__ == "__main__":
     # we sent our actual outputs that we expect our feed forward network to predict
     def back_propogation_process(outputs):
         error = []
-        our_lambda = 0.3 # here out 0.1 is lambda
-        momentum_mt = 0.2 # our momentum same as like lambda kind of
+        our_lambda = 0.1 # here out 0.1 is lambda
+        momentum_mt = 0.1 # our momentum same as like lambda kind of
 
         # first calculating errors where we subtract the expected output which we pass as parameter to the 
         # back propogation and then subtract it with the actual result we get for our output which is stored in Activation value of our layer
