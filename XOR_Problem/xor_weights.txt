@@ -1,0 +1,1 @@
+When LR = 0.01, Momentum = 0.1

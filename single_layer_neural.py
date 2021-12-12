@@ -25,7 +25,7 @@ class Neuron:
 
     def sigmoid(self, x):
         #applying the sigmoid function
-        self.AV = 1 / (1 + math.exp(-(0.1)*(x)))
+        self.AV = 1 / (1 + math.exp(-(0.3 * x)))
         #print(self.AV)  
 
     def mult_weights(self, prevLayer):
@@ -46,8 +46,6 @@ if __name__ == "__main__":
     1   0  |   1
     1   1  |   0
     '''
-    
-
 
     #input layer (where third object is the bias neuron)
     input_layer = [Neuron(0, 2, 0), Neuron(0,2,1), Neuron(0, 2, 2)]
@@ -110,8 +108,8 @@ if __name__ == "__main__":
     # we sent our actual outputs that we expect our feed forward network to predict
     def back_propogation_process(outputs):
         error = []
-        our_lambda = 0.1 # here out 0.1 is lambda
-        momentum_mt = 0.1 # our momentum same as like lambda kind of
+        our_lambda = 0.3 # here out 0.1 is lambda
+        momentum_mt = 0.2 # our momentum same as like lambda kind of
 
         # first calculating errors where we subtract the expected output which we pass as parameter to the 
         # back propogation and then subtract it with the actual result we get for our output which is stored in Activation value of our layer
@@ -128,18 +126,27 @@ if __name__ == "__main__":
             result = 0
             for j in range(0, len(output_layer)):
                 result = result + ( float(output_layer[j].grad_val) * float(hidden_layer[i].weights_list[j]) ) 
-                hidden_layer[i].grad_val = our_lambda * hidden_layer[i].AV * (1 - hidden_layer[i].AV) * result
+            
+            hidden_layer[i].grad_val = our_lambda * hidden_layer[i].AV * (1 - hidden_layer[i].AV) * result
 
         
         # for now as we have calculated gradiatn decent for both the hidden and output layer so now it's time to calculate weight updations for neurons
-        for i in range(0, len(hidden_layer)):
-            for j in range(0, len(output_layer)): # We have momentum same as like lambda where we tell it how fast it should move?
-                hidden_layer[i].delta_weights[j] = our_lambda * float(output_layer[j].grad_val) * float(hidden_layer[i].AV) + momentum_mt * float(hidden_layer[i].delta_weights[j])
-
+        #for i in range(0, len(hidden_layer)):
+            #for j in range(0, len(output_layer)): # We have momentum same as like lambda where we tell it how fast it should move?
+                #hidden_layer[i].delta_weights[j] = our_lambda * float(output_layer[j].grad_val) * float(hidden_layer[i].AV) + momentum_mt * float(hidden_layer[i].delta_weights[j])
+        hidden_layer[0].delta_weights[0] = our_lambda * float(output_layer[0].grad_val) * float(hidden_layer[0].AV) + momentum_mt * float(hidden_layer[0].delta_weights[0])
+        hidden_layer[0].delta_weights[1] = our_lambda * float(output_layer[1].grad_val) * float(hidden_layer[0].AV) + momentum_mt * float(hidden_layer[0].delta_weights[1])
+        hidden_layer[1].delta_weights[0] = our_lambda * float(output_layer[0].grad_val) * float(hidden_layer[1].AV) + momentum_mt * float(hidden_layer[1].delta_weights[0])
+        hidden_layer[1].delta_weights[1] = our_lambda * float(output_layer[1].grad_val) * float(hidden_layer[1].AV) + momentum_mt * float(hidden_layer[1].delta_weights[1])
         #  time for us to calculate updated weights for the input layer
-        for i in range(0, len(input_layer)):
-            for j in range(0, (len(hidden_layer) - 1)): # We have momentum same as like lambda where we tell it how fast it should move?
-                input_layer[i].delta_weights[j] = our_lambda * float(hidden_layer[j].grad_val) * float(input_layer[i].AV) + momentum_mt * float(input_layer[i].delta_weights[j])
+
+        #for i in range(0, len(input_layer)):
+            #for j in range(0, (len(hidden_layer) - 1)): # We have momentum same as like lambda where we tell it how fast it should move?
+                #input_layer[i].delta_weights[j] = our_lambda * float(hidden_layer[j].grad_val) * float(input_layer[i].AV) + momentum_mt * float(input_layer[i].delta_weights[j])
+        input_layer[0].delta_weights[0] = our_lambda * float(hidden_layer[0].grad_val) * float(input_layer[0].AV) + momentum_mt * float(input_layer[0].delta_weights[0])
+        input_layer[0].delta_weights[1] = our_lambda * float(hidden_layer[1].grad_val) * float(input_layer[0].AV) + momentum_mt * float(input_layer[0].delta_weights[1])
+        input_layer[1].delta_weights[0] = our_lambda * float(hidden_layer[0].grad_val) * float(input_layer[1].AV) + momentum_mt * float(input_layer[1].delta_weights[0])
+        input_layer[1].delta_weights[1] = our_lambda * float(hidden_layer[1].grad_val) * float(input_layer[1].AV) + momentum_mt * float(input_layer[1].delta_weights[1])
 
         # now finally updating weights after calculating new delta weights on the basis of gradiant
         for i in range(0, len(hidden_layer)):
@@ -211,17 +218,26 @@ if __name__ == "__main__":
     def saving_weights():
         weights_file = open("new_game_data_weights_accurate.txt", "a")
         weights_file.write("\n")
-        weights_file.write(str(input_layer[0].weights_list[0]) + "," + str(input_layer[1].weights_list[0]) + "," + str(input_layer[1].weights_list[1]) + "," +
-                str(input_layer[2].weights_list[0]) + "," + str(input_layer[2].weights_list[1]) + "," + str(hidden_layer[0].weights_list[0]) + "," +
-                str(hidden_layer[0].weights_list[1]) + "," + str(hidden_layer[1].weights_list[0]) + "," + str(hidden_layer[1].weights_list[1]) + "," +
-                str(input_layer[0].weights_list[1]) + "," + str(hidden_layer[2].weights_list[0]) + "," + str(hidden_layer[2].weights_list[1]))
+        weights_file.write(
+                str(input_layer[0].weights_list[0]) + "," +
+                str(input_layer[0].weights_list[1]) + "," +  
+                str(input_layer[1].weights_list[0]) + "," + 
+                str(input_layer[1].weights_list[1]) + "," +
+                str(input_layer[2].weights_list[0]) + "," + 
+                str(input_layer[2].weights_list[1]) + "," + 
+                str(hidden_layer[0].weights_list[0]) + "," +
+                str(hidden_layer[0].weights_list[1]) + "," + 
+                str(hidden_layer[1].weights_list[0]) + "," + 
+                str(hidden_layer[1].weights_list[1]) + "," +
+                str(hidden_layer[2].weights_list[0]) + "," + 
+                str(hidden_layer[2].weights_list[1]))
         weights_file.close()
         return
 
     def load_weights():
         # Picking them from the file
         weights = []
-        with open('single_line_weight.txt') as f:
+        with open('/Users/mac/Downloads/Deep Learning & Neural Network Lab/Lab1/single_line_weight.txt') as f:
             line = f.read()
             weights = line.split(",")        
 
@@ -255,6 +271,7 @@ if __name__ == "__main__":
         print(normalized_result)
         load_weights()
         feed_forward_process(normalized_result) #Here row
+        print([output_layer[0].AV,output_layer[1].AV])
         return de_normalization([output_layer[0].AV,output_layer[1].AV])
 
     for i in range(1):
