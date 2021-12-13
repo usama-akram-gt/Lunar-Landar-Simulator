@@ -6,42 +6,40 @@ our_lambda = 0.1 # here out 0.1 is lambda
 learning_rate = 0.1 # defining learning rate for back propagation
 momentum_mt = 0.1 # our momentum same as like lambda kind of
 
+stopping_error_check = 0.0 # storing errors into it so that we can check upto 5 decimals no change for 2 continues iterations
+
 # A neural network class
 class Neuron:  
       
     # init method or constructor   
     def __init__(self, AV, number_of_weights, index):  
-        self.AV = AV
+        self.AV = AV # setting neuron Activation Value
         # weights list
         
-        #now defining 2 more variables for the back propogation
+        # defining 2 more variables for the back propogation
         self.delta_weights = []
         self.grad_val = 0
 
-        self.weights_list = []
+        self.weights_list = [] # randomizing weights of the neuron according to the no. of weights
         for i in range(0, number_of_weights):
-            #generates random values between 0 to 1
             self.weights_list.append(random.random())
             self.delta_weights.append(0)
 
-        #print(self.weights_list)
-
-        self.index = index
+        self.index = index # setting neuron index
 
     def sigmoid(self, x):
-        #applying the sigmoid function
-        self.AV = 1 / (1 + math.exp(-(our_lambda * x)))
-        #print(self.AV)  
+        self.AV = 1 / (1 + math.exp(-(our_lambda * x))) #applying the sigmoid function
 
     def mult_weights(self, prevLayer):
         total_sum = 0
-        for i in range(0, len(prevLayer)):
+        for i in range(0, len(prevLayer)): # calculating weights by multiplying AV of each neuron with weights and adding
             total_sum = total_sum + (float(prevLayer[i].AV) * float(prevLayer[i].weights_list[self.index]))
         
         self.sigmoid(total_sum) 
 
 
-#2*4*2
+#2*2*2 structure
+
 #input layer (where third object is the bias neuron)
 input_layer = [Neuron(0, 2, 0), Neuron(0, 2, 1), Neuron(0, 2, 2)]
 #hidden layer (where third object is the bias neuron)
@@ -50,15 +48,17 @@ hidden_layer = [Neuron(0, 2, 0), Neuron(0, 2, 1), Neuron(0, 2, 2)]
 output_layer = [Neuron(0, 0, 0), Neuron(0, 0, 1)]
 
 def feed_forward_process(inputs):
-
+    # Setting input_layer activation values
     for i in range(0, len(input_layer)):
         input_layer[i].AV = inputs[i]
-
+    
+    # Calculating hidden_layer activation values on the basis of input_layer
     for i in range(0, (len(hidden_layer) - 1)):
         hidden_layer[i].mult_weights(input_layer)
 
     hidden_layer[-1].AV = 1 #It's our bios which is for 3rd neuron we are setting up on our hidden layer which value always be 1
 
+    # Calculating output_layer activation values on the basis of hidden_layer
     for i in range(0, len(output_layer)):
         output_layer[i].mult_weights(hidden_layer)
 
@@ -135,7 +135,7 @@ def training_error(): # We will be calculating this error on our training data a
         # become stable then we stop but I need to ask teacher how we check actually 
         # check that now we are not getting any significant change in our model
         print('Training Error: ')
-        root_mean_squere(total_error)         
+        return root_mean_squere(total_error)
 
 # Feedforward + error calculation // but on the validation/test file
 def validation_error(): # We will be doing it on our testing data or we can call it validation data
@@ -164,10 +164,12 @@ def root_mean_squere(total_error):
 def saving_weights():
     weights_file = open("weights_3.txt", "a")
     weights_file.write("\n")
+    # Iterating over input_layer and weights after epoch for saving them to file
     for i in range(0, len(input_layer)):
         for j in range(0, len(input_layer[i].weights_list)):
             weights_file.write(str(input_layer[i].weights_list[j]) + ",")
 
+    # Iterating over hidden_layer and weights after epoch for saving them to file
     for i in range(0, len(hidden_layer)):
         for j in range(0, len(hidden_layer[i].weights_list)):
             weights_file.write(str(hidden_layer[i].weights_list[j]) + ",")        
@@ -182,17 +184,20 @@ def load_weights():
         weights = line.split(",")        
 
     k = 0
+    # Iterating over input_layer and weights for assigning
     for i in range(0, len(input_layer)):
         for j in range(0, len(input_layer[i].weights_list)):
             input_layer[i].weights_list[j] = weights[k]
             k = k + 1
     
+    # Iterating over hidden_layer and weights for assigning
     for i in range(0, len(hidden_layer)):
         for j in range(0, len(hidden_layer[i].weights_list)):
             hidden_layer[i].weights_list[j] = weights[k]
             k = k + 1
     return
 
+# specifying min and maximum values according to model
 x1_max = 477.731
 x2_max = 567.535
 y1_max = 7.995
@@ -203,38 +208,55 @@ x2_min = 65.460
 y1_min = -3.866
 y2_min = -5.147
 
-def normalization(outputs):
-    output1 = (outputs[0] - (x1_min)) / ((x1_max) - (x1_min))
-    output2 = (outputs[1] - (x2_min)) / ((x2_max) - (x2_min))
-    return [output1, output2]
+def normalization(inputs):
+    input1 = (inputs[0] - (x1_min)) / ((x1_max) - (x1_min))  # Normalizing first data point from input row
+    input2 = (inputs[1] - (x2_min)) / ((x2_max) - (x2_min))  # Normalizing second data point from input row
+    return [input1, input2]
 
 def de_normalization(outputs):
-    # As we have normalized now need to convert it back to de_normalize 
+    # As we have normalized now need to convert it back to the original state using de_normalization
     return [(outputs[0] * ((y1_max) - (y1_min)) + (y1_min)),(outputs[1] * ((y2_max) - (y2_min)) + (y2_min))]
 
 def prediction(input_row):
     # we predict in this function that what would be the result against one game input
-    normalized_result = normalization(input_row)
-    normalized_result.append(1)
+    normalized_result = normalization(input_row) # Normalizing the input row before passing to feed_forward
+    normalized_result.append(1) # Appending bias into normalized list of inputs
     print(normalized_result)
-    load_weights()
-    feed_forward_process(normalized_result) #Here row
+    
+    load_weights() # Loading weights
+    
+    feed_forward_process(normalized_result) # Checking feed_forward_ with the input row
+    
     print([output_layer[0].AV,output_layer[1].AV])
-    return de_normalization([output_layer[0].AV,output_layer[1].AV])
+    return de_normalization([output_layer[0].AV,output_layer[1].AV]) # returning denormalized predicted result to the game 
 
-run = 2
+run = 1
 if run == 1:
-    for i in range(1000):
-        print('Epoch no. ', i + 1)
+    for epoch_count in range(2000): # Controlling no. of epochs in case if the model will not in any case
+        print('Epoch no. ', epoch_count + 1)
+        
         # We call this function to train our model using the game dataset
         training()  
+        
         # Checking training error after we are done training our model
-        training_error() 
+        error = training_error()
+
+        # Checking if upto 5 decimals we don't see any siginifant change then stopping
+        if float("{:.5f}".format(error)) == float("{:.5f}".format(stopping_error_check)):
+            print("Stopping")
+            break
+        else:
+            stopping_error_check = error
+
         # Checking validation error on our validation data after training
         validation_error() 
         print('\n')
 
         # Weights are saved after every epoch
         saving_weights()
+
+        #increasing epoch size
+        epoch_count += 1
+
 elif run == 2:
-    print(prediction([273.670,354.100]))
+    print(prediction([273.670,354.100])) # Making prediction
