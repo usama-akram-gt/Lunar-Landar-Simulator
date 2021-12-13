@@ -193,15 +193,15 @@ def load_weights():
             k = k + 1
     return
 
-x1_max = 750.731
-x2_max = 719.332
-y1_max = 7.999
-y2_max = 6.193
+x1_max = 638.571
+x2_max = 580.603
+y1_max = 7.995
+y2_max = 5.610
 
-x1_min = -599.480
-x2_min = 65.754
-y1_min = -4.408
-y2_min = -7.876
+x1_min = -660.134
+x2_min = 65.204
+y1_min = -3.893
+y2_min = -5.423
 
 def normalization(outputs):
     output1 = (outputs[0] - (x1_min)) / ((x1_max) - (x1_min))
