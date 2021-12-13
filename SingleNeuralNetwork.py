@@ -3,7 +3,7 @@ import random
 from csv import reader
 
 our_lambda = 0.1 # here out 0.1 is lambda
-learning_rate = 0.8 # defining learning rate for back propagation
+learning_rate = 0.1 # defining learning rate for back propagation
 momentum_mt = 0.1 # our momentum same as like lambda kind of
 
 # A neural network class
@@ -193,15 +193,15 @@ def load_weights():
             k = k + 1
     return
 
-x1_max = 638.571
-x2_max = 580.603
+x1_max = 477.731
+x2_max = 567.535
 y1_max = 7.995
-y2_max = 5.610
+y2_max = 4.339
 
-x1_min = -660.134
-x2_min = 65.204
-y1_min = -3.893
-y2_min = -5.423
+x1_min = -542.953
+x2_min = 65.460
+y1_min = -3.866
+y2_min = -5.147
 
 def normalization(outputs):
     output1 = (outputs[0] - (x1_min)) / ((x1_max) - (x1_min))
@@ -224,7 +224,7 @@ def prediction(input_row):
 
 run = 2
 if run == 1:
-    for i in range(500):
+    for i in range(1000):
         print('Epoch no. ', i + 1)
         # We call this function to train our model using the game dataset
         training()  
