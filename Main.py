@@ -6,7 +6,7 @@ from GameLoop import GameLoop
 def importConfigFile():
     keys = []
     values = []
-    file = open("/Users/mac/Downloads/Deep Learning & Neural Network Lab/ce889assignment/ce889assignment/Files/Config.con", 'r')
+    file = open("./Files/Config.con", 'r')
     for line in file:
         line_split = line.split(',')
         for individual in line_split:

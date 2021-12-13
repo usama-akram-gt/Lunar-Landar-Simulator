@@ -222,7 +222,7 @@ def prediction(input_row):
     print([output_layer[0].AV,output_layer[1].AV])
     return de_normalization([output_layer[0].AV,output_layer[1].AV])
 
-run = 1
+run = 2
 if run == 1:
     for i in range(500):
         print('Epoch no. ', i + 1)
