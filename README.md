@@ -17,8 +17,7 @@ measure.
 
 <p align="center">
     <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing1.jpg" width="400" />
-    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing2.jpg" width="400" /> 
-    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing3.jpg" width="400" />
+    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing2.jpg" width="400" />
 </p>
 
 ## Important information related to files
