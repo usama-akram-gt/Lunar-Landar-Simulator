@@ -1,7 +1,7 @@
 ### About The Project
 
 <p align="center">
-   <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/game_play.gif" />
+   <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/LunarLandar_GamePlay.gif" />
 </p>
 
 Deep learning to help land lander onto his target. Collected the data by playing the game and then trained the network
@@ -16,9 +16,9 @@ measure.
 * Removed the duplicate rows and lower the size of the data with upto 80% winning moves while 30% remaining
 
 <p align="center">
-    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing2.jpg" width="100" />
-    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing2.jpg" width="100" /> 
-    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing2.jpg" width="100" />
+    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing2.jpg" width="400" />
+    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing2.jpg" width="400" /> 
+    <img src="https://github.com/usama-akram-gt/LUNAR-LANDAR-SIMULATOR/blob/master/assets/preprocessing2.jpg" width="400" />
 </p>
 
 ## Important information related to files
