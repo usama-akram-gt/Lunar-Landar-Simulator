@@ -162,7 +162,7 @@ def root_mean_squere(total_error):
     return math.sqrt(sum(total_error) / len(total_error))
 
 def saving_weights():
-    weights_file = open("weights_3.txt", "a")
+    weights_file = open("weights.txt", "a")
     weights_file.write("\n")
     # Iterating over input_layer and weights after epoch for saving them to file
     for i in range(0, len(input_layer)):
